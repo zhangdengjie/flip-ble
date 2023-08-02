@@ -1,20 +1,14 @@
 apply plugin: 'com.android.library'
-//Gradle Maven Publish Plugin
-apply plugin: 'maven-publish'
-apply plugin: 'signing'
 
 android {
-    compileSdkVersion build_versions.target_sdk
-    buildToolsVersion build_versions.build_tools
+    compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
-        versionCode 45
-        versionName versionName
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -28,96 +22,5 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-     implementation "androidx.appcompat:appcompat:$versions.appcompat"
-
-    // Dependencies for local unit tests
-    testImplementation "junit:junit:$versions.junit"
-    testImplementation "org.mockito:mockito-core:$versions.mockito"
-    testImplementation "org.hamcrest:hamcrest-all:$versions.hamcrest"
-    testImplementation "org.powermock:powermock-module-junit4:$versions.powerMockito"
-    testImplementation "org.powermock:powermock-api-mockito:$versions.powerMockito"
-
-    // Android Testing Support Library's runner and rules
-    androidTestImplementation "com.android.support.test:runner:$versions.runner"
-    androidTestImplementation "com.android.support.test:rules:$versions.rules"
-
-    // Espresso UI Testing dependencies.
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$versions.espresso"
-    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$versions.espresso"
-    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$versions.espresso"
-
-}
-
-//Gradle Maven Publish Plugin Script Configuration
-//Run Script: ./gradlew publish
-
-def versionName = "0.7.8"
-def groupName = "cn.bingerz.android"
-def artifactName = "flipble"
-def siteUrl = 'https://github.com/bingerz/flip-ble'
-def gitUrl = 'https://github.com/bingerz/flip-ble.git'
-def repositorySnapshotUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-def repositoryReleaseUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-
-task generateSourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier 'sources'
-}
-
-signing {
-    sign publishing.publications
-}
-
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = groupName
-                artifactId = artifactName
-                version = versionName
-                // 上传source，这样使用放可以看到方法注释
-                artifact generateSourcesJar
-
-                pom {
-                    name = 'FlipBLE'
-                    description = 'A stable, easy-to-use framework developed based on the Android Bluetooth Low Energy API.'
-                    url = siteUrl
-                    licenses {
-                        license {
-                            name = 'The Apache Software License, Version 2.0'
-                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = findProperty("developer.id")
-                            name = findProperty("developer.name")
-                            email = findProperty("developer.email")
-                        }
-                    }
-                    scm {
-                        connection = gitUrl
-                        developerConnection = gitUrl
-                        url = siteUrl
-                    }
-                }
-            }
-        }
-
-        repositories {
-            // 定义一个 maven 仓库
-            maven {
-                // 可以有且仅有一个仓库不指定 name 属性，会隐式设置为 Maven
-                name = "release"
-                // 根据 versionName 来判断仓库地址
-                url = versionName.endsWith('SNAPSHOT') ? repositorySnapshotUrl : repositoryReleaseUrl
-                // 仓库用户名密码
-                credentials {
-                    username = findProperty("sonatype.username")
-                    password = findProperty("sonatype.password")
-                }
-            }
-        }
-    }
+    implementation libs.appcompact
 }

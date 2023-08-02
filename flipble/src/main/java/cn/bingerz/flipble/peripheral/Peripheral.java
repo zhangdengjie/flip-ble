@@ -1162,7 +1162,7 @@ public class Peripheral {
                 @Override
                 public void run() {
                     if (notifyCallback != null) {
-                        notifyCallback.onCharacteristicChanged(data);
+                        notifyCallback.onCharacteristicChanged(data,characteristic.getUuid().toString());
                     }
                 }
             });

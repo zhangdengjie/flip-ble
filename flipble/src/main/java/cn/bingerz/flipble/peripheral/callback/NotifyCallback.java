@@ -12,7 +12,7 @@ public abstract class NotifyCallback {
 
     public abstract void onNotifyFailure(BLEException exception);
 
-    public abstract void onCharacteristicChanged(byte[] data);
+    public abstract void onCharacteristicChanged(byte[] data,String uuid);
 
     private String key;
 
