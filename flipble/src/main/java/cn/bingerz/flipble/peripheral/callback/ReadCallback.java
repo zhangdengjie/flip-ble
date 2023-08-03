@@ -8,7 +8,7 @@ import cn.bingerz.flipble.exception.BLEException;
  */
 public abstract class ReadCallback {
 
-    public abstract void onReadSuccess(byte[] data);
+    public abstract void onReadSuccess(byte[] data,String uuid);
 
     public abstract void onReadFailure(BLEException exception);
 

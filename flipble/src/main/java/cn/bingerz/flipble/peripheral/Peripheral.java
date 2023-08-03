@@ -1205,7 +1205,7 @@ public class Peripheral {
                     @Override
                     public void run() {
                         if (status == BluetoothGatt.GATT_SUCCESS) {
-                            readCallback.onReadSuccess(data);
+                            readCallback.onReadSuccess(data,characteristic.getUuid().toString());
                         } else {
                             readCallback.onReadFailure(new GattException(status));
                         }
