@@ -117,8 +117,10 @@ public class CentralManager {
 
     private boolean checkLocationPermission() {
         return !GeneralUtil.isGreaterOrEqual6_0()
+                // Android 12 需要开启扫描权限
+                || (GeneralUtil.isGreaterOrEqual12() && GeneralUtil.isGranted(mContext,Manifest.permission.BLUETOOTH_SCAN)
                 || GeneralUtil.isGranted(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
-                || GeneralUtil.isGranted(mContext, Manifest.permission.ACCESS_COARSE_LOCATION);
+                || GeneralUtil.isGranted(mContext, Manifest.permission.ACCESS_COARSE_LOCATION));
     }
 
     private BluetoothManager getBluetoothManager() {
