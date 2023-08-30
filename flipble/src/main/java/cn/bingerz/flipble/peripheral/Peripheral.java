@@ -60,7 +60,7 @@ public class Peripheral {
     private static final int DEFAULT_DELAY_CONNECT_EVENT = 600;
     private static final int DEFAULT_DELAY_DISCOVER_SERVICE = 600;
 
-    private static final int DEFAULT_CONNECT_RETRY_COUNT = 2;
+    private static final int DEFAULT_CONNECT_RETRY_COUNT = 0;
     private static final int DEFAULT_DELAY_CONNECT_RETRY = 500;
 
     private static final int DEFAULT_DELAY_NEXT_COMMAND = 500;
@@ -1114,6 +1114,7 @@ public class Peripheral {
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 sendDiscoverServiceMsg();
             } else if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                mBluetoothGattCompat.disconnect();
                 mBluetoothGattCompat.close();
                 synchronized (mStateLock) {
                     if (mConnectState == ConnectionState.CONNECT_CONNECTING) {
@@ -1145,6 +1146,7 @@ public class Peripheral {
                     sendMsgDelayedToMainH(MSG_CONNECT_SUCCESS, status, 0, Peripheral.this, DEFAULT_DELAY_CONNECT_EVENT);
                 }
             } else {
+                mBluetoothGattCompat.disconnect();
                 mBluetoothGattCompat.close();
                 handleConnectFail(status);
             }
