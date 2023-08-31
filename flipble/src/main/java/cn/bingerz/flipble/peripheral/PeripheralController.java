@@ -6,10 +6,12 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import java.util.UUID;
 
+import androidx.annotation.NonNull;
 import cn.bingerz.flipble.central.CentralManager;
 import cn.bingerz.flipble.exception.NoSuchPropertyException;
 import cn.bingerz.flipble.exception.OperationException;
@@ -44,9 +46,14 @@ public class PeripheralController {
     private BluetoothGattService mService;
     private BluetoothGattCharacteristic mCharacteristic;
 
-    private Handler mHandler = new MyHandler();
+    private final Handler mHandler = new MyHandler(Looper.getMainLooper());
 
     private static final class MyHandler extends Handler {
+
+        public MyHandler(@NonNull Looper looper) {
+            super(looper);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
