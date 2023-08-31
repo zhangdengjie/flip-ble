@@ -880,7 +880,7 @@ public class Peripheral {
             String charactUUID = command.getCharactUUID();
             PeripheralController controller = newPeripheralController();
             if (controller != null) {
-                controller.withUUIDString(serviceUUID, charactUUID)
+                controller.withUUIDString(serviceUUID, charactUUID,command.isNoResponse())
                         .writeCharacteristic(command.getData(), callback, charactUUID);
             }
         }

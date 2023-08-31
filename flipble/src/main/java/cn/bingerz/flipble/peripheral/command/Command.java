@@ -43,6 +43,8 @@ public class Command implements Comparator<Command> {
 
     private byte[] data;
 
+    private boolean noResponse = false;
+
     private Object callback;
 
     public Command(int priority, String key, int method, Object callback) {
@@ -65,6 +67,14 @@ public class Command implements Comparator<Command> {
         setCharactUUID(charactUUID);
         setData(data);
         setCallback(callback);
+    }
+
+    public boolean isNoResponse() {
+        return noResponse;
+    }
+
+    public void setNoResponse(boolean noResponse) {
+        this.noResponse = noResponse;
     }
 
     /** Return the priority for this command. Can be one of the values in {@link Priority}. */

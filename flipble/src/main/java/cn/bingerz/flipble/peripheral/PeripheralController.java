@@ -132,12 +132,19 @@ public class PeripheralController {
     }
 
     public PeripheralController withUUID(UUID serviceUUID, UUID charactUUID) {
+        return withUUID(serviceUUID, charactUUID, false);
+    }
+
+    public PeripheralController withUUID(UUID serviceUUID, UUID charactUUID,boolean noResponse) {
         if (serviceUUID != null && mBluetoothGattCompat != null) {
             mService = mBluetoothGattCompat.getService(serviceUUID);
         }
 
         if (mService != null && charactUUID != null) {
             mCharacteristic = mService.getCharacteristic(charactUUID);
+            if (noResponse) {
+                mCharacteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+            }
         }
 
         return this;
@@ -148,7 +155,11 @@ public class PeripheralController {
     }
 
     public PeripheralController withUUIDString(String serviceUUID, String charactUUID) {
-        return withUUID(formUUID(serviceUUID), formUUID(charactUUID));
+        return withUUID(formUUID(serviceUUID), formUUID(charactUUID),false);
+    }
+
+    public PeripheralController withUUIDString(String serviceUUID, String charactUUID,boolean noResponse) {
+        return withUUID(formUUID(serviceUUID), formUUID(charactUUID),noResponse);
     }
 
     /**
