@@ -594,6 +594,7 @@ public class Peripheral {
             synchronized (mStateLock) {
                 mConnectState = ConnectionState.CONNECT_DISCONNECTING;
             }
+            mBluetoothGattCompat.refreshDeviceCache();
         }
         resetBusyState();
         getMainHandler().removeCallbacksAndMessages(null);
@@ -626,6 +627,9 @@ public class Peripheral {
             mBluetoothGattCompat.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if (mBluetoothGattCompat != null) {
+            mBluetoothGattCompat.refreshDeviceCache();
         }
         resetBusyState();
         removeConnectionStateCallback();

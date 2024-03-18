@@ -5,7 +5,9 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
+import android.util.Log;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
 
@@ -168,4 +170,20 @@ public class BluetoothGattCompat {
             }
         }
     }
+
+    /**
+     * Clears the device cache. After uploading new firmware the DFU target will
+     * have other services than before.
+     */
+    public void refreshDeviceCache() {
+        if (bluetoothGatt != null) {
+            try {
+                final Method refresh = bluetoothGatt.getClass().getMethod("refresh");
+                refresh.invoke(bluetoothGatt);
+            } catch (Exception e) {
+                EasyLog.e("refreshDeviceCache: 刷新设备缓存报错", e);
+            }
+        }
+    }
+
 }
