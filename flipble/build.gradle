@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace "cn.bingerz.flipblelib"
     compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
